@@ -1,0 +1,289 @@
+# =============================================================================
+# K Company Tryout Document
+# Generated with CLRP-DOCGEN
+# =============================================================================
+
+style:
+  theme: "k_company"
+
+output:
+  path: "output/K_Company_Tryout_Document.docx"
+  format: "docx"
+
+content:
+  # ---- Title Page ----
+  - type: title_page
+    title: "K Company Tryout Document"
+    subtitle: "327th Star Corps — K Company"
+    author: "KC Leadership"
+    formatted_by: "KC Leadership"
+    version_date: "02/10/2026"
+    extra_lines:
+      - "327th Star Corps"
+      - "K Company"
+
+  # ---- Table of Contents ----
+  - type: table_of_contents
+    entries:
+      - title: "Introduction"
+      - title: "Color Codes"
+      - title: "Setup"
+      - title: "Phase 1: Questions"
+      - title: "Phase 2: Reconnaissance"
+      - title: "Phase 3: Operation"
+      - title: "Phase 4: Engineering"
+      - title: "Conclusion"
+
+  # ---- Introduction ----
+  - type: heading
+    text: "Introduction"
+    level: 1
+
+  - type: metadata_line
+    author: "KC Leadership"
+    created: "02/10/2026"
+
+  - type: paragraph
+    text: >
+      This is the K Company Tryout document. You, as a K-Company Officer
+      (KCO+), are expected to read, follow, and utilize this document
+      throughout the entirety of the tryout. There are no strikes to this
+      tryout however, you as the host are responsible for keeping any mingy
+      and unwanted behavior out. If any signs of favoritism are shown
+      throughout the course of this tryout, there will also be subsequent
+      consequences to follow. Should you have any questions about how
+      the tryout is to be conducted, or how to host them in general, feel free
+      to direct them towards any other K Company Captain and let them
+      shadow you while you host.
+
+  - type: page_break
+
+  # ---- Color Codes ----
+  - type: color_code_legend
+
+  - type: page_break
+
+  # ---- Setup ----
+  - type: heading
+    text: "Setup"
+    level: 1
+
+  - type: paragraph
+    text: "Prior to conducting tryouts, follow this checklist:"
+    bold: true
+
+  - type: heading
+    text: "In Game"
+    level: 2
+
+  - type: bullet_list
+    items:
+      - "Claim the RFOB, as the tryouts will be conducted there."
+      - "Candidates are to start outside RFOB on the west wall."
+      - "You will need one Helper."
+
+  - type: callout
+    text: "/advert K Company Claims RFOB AOS/KOS on unauthorized access."
+    callout_style: "info"
+
+  - type: callout
+    text: "/advert K Company maintains claim on RFOB AOS/KOS. (Every 15 minutes)"
+    callout_style: "info"
+
+  - type: divider
+
+  - type: paragraph
+    text: "Read the following excerpt to the candidates in preparation:"
+    bold: true
+
+  - type: paragraph
+    text: >
+      "Welcome to K Company Tryouts. This tryout runs on a 2 strike system — if
+      you receive 2 strikes you will fail and be dismissed. Should you fail,
+      there is a 3 Hour cooldown on when you may try out again and you are
+      encouraged to do so. From this point on, PTS is active for the duration
+      of the tryout. Best of luck. This first phase before becoming a full
+      trooper is questions, this is all open book, and I will send a link if
+      you need clarification."
+    color: "read_aloud_green"
+    italic: true
+
+  - type: page_break
+
+  # ---- Phase 1: Questions ----
+  - type: heading
+    text: "Phase 1: Questions"
+    level: 1
+
+  - type: paragraph
+    text: "You only need to ask 5 Company questions. No strikes will be given in this phase."
+    color: "host_info_red"
+    bold: true
+
+  - type: heading
+    text: "K-Company Lore"
+    level: 2
+
+  - type: qa_block
+    question: "How many soldiers did K Company consist of?"
+    answer: "144 clone troopers with added support personnel"
+
+  - type: qa_block
+    question: "What Battalion did K Company Serve under?"
+    answer: "Hawkbat Battalion (327th Star Corps is also acceptable)"
+
+  - type: qa_block
+    question: "How many platoons did K Company consist of?"
+    answer: "Four (4) Platoons"
+
+  - type: qa_block
+    question: "What was their first battle and their mission in that battle?"
+    answer: "K Company (and Hawkbat Battalion) were ordered to march toward a column of separatist spider droids."
+
+  - type: heading
+    text: "Commander Deviss Lore"
+    level: 2
+
+  - type: qa_block
+    question: "Who was leading KC and what was his rank?"
+    answer: "Clone Captain Deviss (Commander Deviss is also acceptable)"
+
+  - type: qa_block
+    question: "Name 3 major operations that Captain Deviss attended?"
+    answer: "First Battle of Geonosis, Battle of Cato Neimoidia, and Battle of Altyr V"
+
+  - type: qa_block
+    question: "What happened to Captain Deviss after the Battle of Geonosis?"
+    answer: "Deviss was awarded a medal for his actions and was given a new command after the battle's end."
+
+  - type: qa_block
+    question: "What did Commander Deviss do when Order 66 was initiated?"
+    answer: "He executed the order and killed his Jedi General."
+
+  - type: page_break
+
+  # ---- Phase 2: Reconnaissance ----
+  - type: heading
+    text: "Phase 2: Reconnaissance"
+    level: 1
+
+  - type: paragraph
+    text: >
+      "Welcome trainee(s) to the second portion of this tryout. We have intel
+      that one of our Captain's were taken hostage and is now at Recon FOB.
+      Your job is to conduct a SALUTE Report without being seen then report
+      back to me."
+    color: "read_aloud_green"
+    italic: true
+
+  - type: callout
+    text: "There is no time limit, however, you may set a timer with a minimum of 3 minutes."
+    callout_style: "note"
+
+  - type: bullet_list
+    items:
+      - "If they are spotted: 1/2 of a strike"
+      - "Every 5 Droids they miss: 1/2 of a strike (Droids inside don't count)"
+
+  - type: paragraph
+    text: "Host: Have a Helper or yourself as the Captain inside RFOB | @ Requesting to be no-targeted."
+    color: "host_info_red"
+    bold: true
+
+  - type: heading
+    text: "High Server Population Setup"
+    level: 2
+
+  - type: bullet_list
+    items:
+      - "Towers: 2x B1 Droids each tower | E5 Blaster | Normal Difficulty | 1500 HP"
+      - "Courtyard: 8x B1 Droids | E5 Blaster | Normal Difficulty | 1500 HP"
+      - "Inside Main Lobby: 4x B1 Droids | E5 Blaster | Normal Difficulty | 1500 HP"
+
+  - type: heading
+    text: "Low Server Population Setup"
+    level: 2
+
+  - type: bullet_list
+    items:
+      - "Towers: 3x B1 Droids each tower | E5 Blaster | Normal Difficulty | 1000 HP"
+      - "Courtyard: 12x B1 Droids | E5 Blaster | Normal Difficulty | 1000 HP"
+      - "Inside Main Lobby: 6x B1 Droids | E5 Blaster | Normal Difficulty | 1000 HP"
+
+  - type: page_break
+
+  # ---- Phase 3: Operation ----
+  - type: heading
+    text: "Phase 3: Operation"
+    level: 1
+
+  - type: paragraph
+    text: >
+      "Welcome trainee(s) to the third portion of this tryout. Our
+      reconnaissance unit gave K Company Command intel that suggests that one
+      of our captains is inside the FOB and we must recover him. The base is
+      filled with CIS B1 Droids. It is up to you to discuss a plan on how to
+      rescue our captain."
+    color: "read_aloud_green"
+    italic: true
+
+  - type: paragraph
+    text: "You're looking for good communication — the approach is completely up to them."
+    color: "host_info_red"
+    bold: true
+
+  - type: bullet_list
+    items:
+      - "If they die: 1.5 strikes each time"
+      - "If they kill the Captain: automatic failure"
+
+  - type: callout
+    text: "/comms {KC} Report In."
+    callout_style: "info"
+
+  - type: paragraph
+    text: >
+      You'll be monitoring the communications, leadership, and combat of the
+      candidate, using your best judgement for this portion.
+
+  - type: page_break
+
+  # ---- Phase 4: Engineering ----
+  - type: heading
+    text: "Phase 4: Engineering"
+    level: 1
+
+  - type: paragraph
+    text: >
+      "Welcome trainee(s) to the fourth portion of this tryout. The base
+      Generator has not undergone routine maintenance in some time. You are
+      assigned to repair the generator from code yellow. DO NOT PRESS THE
+      GENERATOR POWER BUTTON! You will use /me to do your repairs. You may
+      start when ready."
+    color: "read_aloud_green"
+    italic: true
+
+  - type: callout
+    text: "If they press the generator power button it is an automatic failure!"
+    callout_style: "warning"
+
+  - type: page_break
+
+  # ---- Conclusion ----
+  - type: heading
+    text: "Conclusion"
+    level: 1
+
+  - type: paragraph
+    text: >
+      If the candidate has made it this far they have passed. Congratulate them
+      on passing their K Company tryout and go over the following:
+
+  - type: bullet_list
+    items:
+      - "Change name to: KC [Certs/SD] [Rank] [Name]"
+      - "Make a role request in #role-request-channel — request the @327th: K Company role."
+      - "Give them the K Company Handbook and JDU Handbook links."
+      - "Inform them of KC Sapper Dupe access (if Sapper Squad)."
+      - "Fill out the All-in-One Form Productivity."
+      - "Make Roster Request in #327th-global-request to get them on the roster."

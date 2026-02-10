@@ -1,0 +1,312 @@
+# =============================================================================
+# K Company JDU Information Handbook
+# Generated with CLRP-DOCGEN
+# =============================================================================
+
+style:
+  theme: "jdu"
+  use_section_symbols: true
+  section_symbol: "\u262C"
+
+output:
+  path: "output/K_Company_JDU_Information.docx"
+  format: "docx"
+
+content:
+  # ---- Title Page ----
+  - type: title_page
+    title: "K Company JDU Information"
+    subtitle: "Jedi Defender's Unit"
+    author: "K Company Leadership"
+    formatted_by: "K Company Leadership"
+    version_date: "02/10/2026"
+    extra_lines:
+      - "327th Star Corps"
+      - "K Company"
+
+  # ---- Table of Contents ----
+  - type: table_of_contents
+    entries:
+      - title: "Important Links"
+      - title: "Temple Codes"
+      - title: "Temple Rules"
+      - title: "Tactics and Formations"
+      - title: "Battle Stations"
+      - title: "Quota and Requirements"
+      - title: "Chain of Command"
+
+  # ---- Important Links ----
+  - type: heading
+    text: "Important Links"
+    level: 1
+
+  - type: bullet_list
+    items:
+      - "Jedi Defender's Unit Handbook"
+      - "Jedi Defender's Unit Roster"
+      - "JDU Productivity Form"
+
+  - type: page_break
+
+  # ---- Temple Codes ----
+  - type: heading
+    text: "Temple Codes"
+    level: 1
+
+  - type: heading
+    text: "Temple Code Green"
+    level: 2
+
+  - type: paragraph
+    text: "Defcon 5 | Normal Duties"
+    bold: true
+    alignment: "center"
+
+  - type: paragraph
+    text: "Temple is under no state of alert. All duties will continue as normal."
+
+  - type: divider
+
+  - type: heading
+    text: "Temple Code Yellow"
+    level: 2
+
+  - type: paragraph
+    text: "Defcon 4 | High Alert"
+    bold: true
+    alignment: "center"
+
+  - type: paragraph
+    text: "It is called when hostiles are near or approaching the Jedi Temple."
+
+  - type: paragraph
+    text: "(During Temple Code Yellow, K Company will report to the entrance of the temple)"
+    italic: true
+    alignment: "center"
+
+  - type: divider
+
+  - type: heading
+    text: "Temple Code Orange"
+    level: 2
+
+  - type: paragraph
+    text: "Defcon 3 | Battlestations"
+    bold: true
+    alignment: "center"
+
+  - type: paragraph
+    text: "Hostiles are actively on the Jedi Temple grounds and the Jedi Order is under attack."
+
+  - type: paragraph
+    text: "(On Temple Code Orange, K Company is required to report to the Jedi Interrogation Room)"
+    italic: true
+    alignment: "center"
+
+  - type: divider
+
+  - type: heading
+    text: "Temple Code Red"
+    level: 2
+
+  - type: paragraph
+    text: "Defcon 2 | Key Areas"
+    bold: true
+    alignment: "center"
+
+  - type: paragraph
+    text: "Hostiles have pushed into the Jedi Temple and taken over key areas."
+
+  - type: paragraph
+    text: "(On Temple Code Red, K Company is required to report to the Jedi Interrogation Room)"
+    italic: true
+    alignment: "center"
+
+  - type: divider
+
+  - type: heading
+    text: "Temple Code Black"
+    level: 2
+
+  - type: paragraph
+    text: "Defcon 1 | Evacuate"
+    bold: true
+    alignment: "center"
+
+  - type: paragraph
+    text: >
+      Hostiles have taken all key locations. The current evacuation process is
+      to go to Recon FOB and await further orders from the highest ranking Jedi
+      present.
+
+  - type: callout
+    text: "Ignoring evacuation orders will have consequences handled by your commanding officers."
+    callout_style: "warning"
+
+  - type: divider
+
+  - type: heading
+    text: "Temple Code Purple"
+    level: 2
+
+  - type: paragraph
+    text: "Padawan or Knight trials are being held."
+    bold: true
+    alignment: "center"
+
+  - type: paragraph
+    text: "JDU are to escort any non-Jedi outside the temple as trials are about to happen."
+
+  - type: page_break
+
+  # ---- Temple Rules ----
+  - type: heading
+    text: "Temple Rules"
+    level: 1
+
+  - type: bullet_list
+    items:
+      - "When in the Temple, Temple Guard and Master+ has final say over all matters."
+      - "JDU personnel are allowed into the Jedi Temple during Temple Code Green."
+      - "Do not minge around in the Jedi Temple."
+      - "Do not go into restricted areas such as Council Chambers, Jedi IR, and the Holocron Vault."
+      - "Follow etiquette — if a Jedi is fighting a Sith do not intervene."
+      - "Once Temple Code Yellow is called, all K Company will report to the Temple entrance and set up a defensive perimeter."
+
+  - type: page_break
+
+  # ---- Tactics and Formations ----
+  - type: heading
+    text: "Tactics and Formations"
+    level: 1
+
+  - type: heading
+    text: "Sword and Shield"
+    level: 2
+
+  - type: paragraph
+    text: >
+      Sword and Shield is when a Jedi blocks enemy fire while being in front of
+      a Clone, allowing them to advance with cover. This technique allows for
+      cover in tight hallways where cover may not be available and pushing
+      forward is critical.
+
+  - type: divider
+
+  - type: heading
+    text: "Duel Perimeter"
+    level: 2
+
+  - type: paragraph
+    text: >
+      In this formation, clones will set up a perimeter around a duel between a
+      Jedi and a Sith. Clones surround the duel in a circle. The formation is
+      meant to keep the Sith fighting the Jedi.
+
+  - type: page_break
+
+  # ---- Battle Stations ----
+  - type: heading
+    text: "Battle Stations"
+    level: 1
+
+  - type: heading
+    text: "Temple Code Yellow"
+    level: 2
+
+  - type: paragraph
+    text: "K Company will report to the Temple entrance and set up a defensive perimeter with the other JDU."
+
+  - type: divider
+
+  - type: heading
+    text: "Temple Code Orange / Temple Code Red"
+    level: 2
+
+  - type: paragraph
+    text: "K Company is required to report to the Jedi Interrogation Room."
+
+  - type: page_break
+
+  # ---- Quota and Requirements ----
+  - type: heading
+    text: "Quota and Requirements"
+    level: 1
+
+  - type: heading
+    text: "Guarding Jedi Trials"
+    level: 2
+
+  - type: paragraph
+    text: >
+      When Temple Code Purple is called, report to the Jedi Temple and set up
+      at the battle station or where trials are held. JDU members may be exempt
+      if partaking in battalion activities or server events. Fill the "Guarding
+      Trials" form on the JDU Prod form.
+
+  - type: paragraph
+    text: "Requirement: You must be there until the end of the trial or a Jedi Master dismisses you."
+    bold: true
+
+  - type: divider
+
+  - type: heading
+    text: "JDU Trainings"
+    level: 2
+
+  - type: paragraph
+    text: >
+      Hosted by a Jedi Master+. Training covers anything pertaining to JDU and
+      Temple defense such as patrols, defense training, guarding tactics, and
+      more. Fill the "Training attendance" form on the JDU Prod form.
+
+  - type: paragraph
+    text: "Requirement: You must actively participate in the training."
+    bold: true
+
+  - type: divider
+
+  - type: heading
+    text: "JDU Events"
+    level: 2
+
+  - type: paragraph
+    text: >
+      Events that specifically invite Jedi or JDU and any events that include
+      assaults or roleplay at the Jedi Temple. Fill the "Event attendance" form.
+      One member will fill out a Lead with a screenshot of 2+ attendees.
+
+  - type: paragraph
+    text: "Requirement: You must actively participate in the event."
+    bold: true
+
+  - type: divider
+
+  - type: heading
+    text: "Guarding Master+"
+    level: 2
+
+  - type: paragraph
+    text: "You can guard a Master+ on base or during events."
+
+  - type: paragraph
+    text: "Requirement: It must be 15 minutes long and you must wait 30 minutes before logging again."
+    bold: true
+
+  - type: page_break
+
+  # ---- Chain of Command ----
+  - type: heading
+    text: "Chain of Command"
+    level: 1
+
+  - type: chain_of_command
+    chain:
+      - "Grand Master Yoda"
+      - "Battalionized Overseer Shaak Ti"
+      - "Branch Overseer Mace Windu"
+      - "Jedi Senior Council"
+      - "Jedi Council"
+      - "Jedi Master"
+      - "JDU Officer"
+      - "JDU Member"

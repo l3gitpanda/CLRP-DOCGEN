@@ -1,0 +1,192 @@
+# =============================================================================
+# K Company Patrol SOP
+# Example SOP document using CLRP-DOCGEN
+# =============================================================================
+
+style:
+  theme: "k_company"
+
+output:
+  path: "output/K_Company_Patrol_SOP.docx"
+  format: "docx"
+
+content:
+  # ---- Title Page ----
+  - type: title_page
+    title: "K Company Patrol SOP"
+    subtitle: "Standard Operating Procedure — Patrol Operations"
+    author: "KC Leadership"
+    formatted_by: "KC Leadership"
+    version_date: "02/10/2026"
+    extra_lines:
+      - "327th Star Corps"
+      - "K Company"
+
+  # ---- Table of Contents ----
+  - type: table_of_contents
+    entries:
+      - title: "Purpose"
+      - title: "Scope"
+      - title: "Patrol Types"
+      - title: "Pre-Patrol Checklist"
+      - title: "Patrol Procedures"
+      - title: "Communication Protocols"
+      - title: "Post-Patrol Debrief"
+      - title: "Revision History"
+
+  # ---- Purpose ----
+  - type: heading
+    text: "Purpose"
+    level: 1
+
+  - type: paragraph
+    text: >
+      This Standard Operating Procedure outlines the protocols and expectations
+      for K Company patrol operations. All K Company members PFC+ are expected
+      to be familiar with and adhere to these procedures when conducting patrols
+      on base, at the Jedi Temple, or during off-base assignments.
+
+  - type: page_break
+
+  # ---- Scope ----
+  - type: heading
+    text: "Scope"
+    level: 1
+
+  - type: paragraph
+    text: >
+      This SOP applies to all K Company personnel when conducting any form of
+      patrol, whether assigned by command or self-initiated during appropriate
+      defcon levels. This includes base patrols, temple patrols, and recon
+      patrols.
+
+  - type: page_break
+
+  # ---- Patrol Types ----
+  - type: heading
+    text: "Patrol Types"
+    level: 1
+
+  - type: heading
+    text: "Base Patrol"
+    level: 2
+
+  - type: paragraph
+    text: >
+      Standard patrols around the main base perimeter and key areas. Conducted
+      during Defcon 4 or when ordered by command. Minimum squad size: 2 troopers.
+
+  - type: heading
+    text: "Temple Patrol"
+    level: 2
+
+  - type: paragraph
+    text: >
+      Patrols of the Jedi Temple and surrounding areas. Conducted as part of
+      JDU duties during Temple Code Green or Yellow. Always coordinate with
+      Jedi Temple Guard.
+
+  - type: heading
+    text: "Recon Patrol"
+    level: 2
+
+  - type: paragraph
+    text: >
+      Reconnaissance-focused patrols outside the base perimeter. Requires
+      PTL approval from an officer. Minimum squad size: 3 troopers. Report
+      findings via SALUTE format.
+
+  - type: page_break
+
+  # ---- Pre-Patrol Checklist ----
+  - type: heading
+    text: "Pre-Patrol Checklist"
+    level: 1
+
+  - type: numbered_list
+    items:
+      - "Confirm current Defcon level permits patrol operations."
+      - "Obtain PTL if the patrol route goes outside base."
+      - "Ensure all patrol members have appropriate loadout."
+      - "Designate a patrol leader (highest ranking member)."
+      - "Brief the patrol on route, objectives, and ROE."
+      - "Notify command of patrol start via comms."
+
+  - type: callout
+    text: "/comms {KC} [Rank] [Name] conducting [type] patrol with [number] troopers."
+    callout_style: "info"
+
+  - type: page_break
+
+  # ---- Patrol Procedures ----
+  - type: heading
+    text: "Patrol Procedures"
+    level: 1
+
+  - type: numbered_list
+    items:
+      - "Maintain formation at all times (Tight Wedge for close quarters, Loose Wedge for open areas)."
+      - "Weapons on safety during Defcon 5; weapons out and on safety during Defcon 4."
+      - "Patrol leader calls all formation changes and directional commands."
+      - "Report any suspicious activity immediately via comms."
+      - "Do not engage hostiles without patrol leader's authorization unless fired upon."
+      - "If contact is made, assume defensive formation and report to command."
+
+  - type: callout
+    text: "Never leave a patrol member behind. Account for all personnel at each checkpoint."
+    callout_style: "warning"
+
+  - type: page_break
+
+  # ---- Communication Protocols ----
+  - type: heading
+    text: "Communication Protocols"
+    level: 1
+
+  - type: paragraph
+    text: "All patrol communications should follow this format:"
+
+  - type: heading
+    text: "SALUTE Report Format"
+    level: 2
+
+  - type: table
+    headers: ["Element", "Description"]
+    rows:
+      - ["S - Size", "How many hostiles / personnel observed"]
+      - ["A - Activity", "What are they doing"]
+      - ["L - Location", "Where are they (be specific)"]
+      - ["U - Uniform", "What do they look like / faction identification"]
+      - ["T - Time", "When did you observe this"]
+      - ["E - Equipment", "What weapons / vehicles do they have"]
+
+  - type: page_break
+
+  # ---- Post-Patrol Debrief ----
+  - type: heading
+    text: "Post-Patrol Debrief"
+    level: 1
+
+  - type: numbered_list
+    items:
+      - "Return to base and regroup at K Company bunks."
+      - "Patrol leader provides a brief debrief to the squad."
+      - "File a patrol report on the Productivity Form."
+      - "Report any notable findings to K Company leadership."
+      - "Notify command that the patrol has concluded."
+
+  - type: callout
+    text: "/comms {KC} [Rank] [Name] patrol concluded. No incidents. / [Brief summary of findings]."
+    callout_style: "info"
+
+  - type: page_break
+
+  # ---- Revision History ----
+  - type: heading
+    text: "Revision History"
+    level: 1
+
+  - type: table
+    headers: ["Date", "Version", "Description", "Author"]
+    rows:
+      - ["02/10/2026", "1.0", "Initial SOP creation", "KC Leadership"]
