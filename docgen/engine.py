@@ -2,8 +2,8 @@
 Core document generation engine.
 
 Builds DOCX files from structured document data using python-docx,
-with full style customization via StyleConfig. Optionally converts
-to PDF using fpdf2 as a fallback or LibreOffice if available.
+with dark-theme styling, gold heading bars, and Republic emblem
+matching the Clone Wars RP document format.
 """
 
 import os
@@ -22,6 +22,10 @@ from docx.oxml import parse_xml
 from .styles import StyleConfig, COLORS
 
 
+# Republic cog / gear emblem drawn with Unicode
+REPUBLIC_EMBLEM = "\u2699"  # ⚙  gear symbol
+
+
 class DocumentEngine:
     """Generates polished DOCX (and optionally PDF) training documents."""
 
@@ -32,11 +36,11 @@ class DocumentEngine:
         self._toc_entries: List[str] = []
 
     # ------------------------------------------------------------------
-    # Page layout
+    # Page layout & dark background
     # ------------------------------------------------------------------
 
     def _setup_page_layout(self):
-        """Configure page size, margins, and default paragraph style."""
+        """Configure page size, margins, dark background, and defaults."""
         for section in self.doc.sections:
             section.page_width = Inches(self.style.page_width)
             section.page_height = Inches(self.style.page_height)
@@ -44,6 +48,20 @@ class DocumentEngine:
             section.bottom_margin = Inches(self.style.margin_bottom)
             section.left_margin = Inches(self.style.margin_left)
             section.right_margin = Inches(self.style.margin_right)
+
+        # Set document background color
+        if self.style.dark_mode:
+            bg_hex = self.style._bg_hex()
+            background = parse_xml(
+                f'<w:background {nsdecls("w")} w:color="{bg_hex}"/>'
+            )
+            self.doc.element.insert(0, background)
+            # Also need displayBackgroundShape in settings
+            settings = self.doc.settings.element
+            disp_bg = parse_xml(
+                f'<w:displayBackgroundShape {nsdecls("w")}/>'
+            )
+            settings.append(disp_bg)
 
         # Set default paragraph style
         style = self.doc.styles["Normal"]
@@ -55,6 +73,15 @@ class DocumentEngine:
         pf.space_before = Pt(self.style.paragraph_spacing_before)
         pf.space_after = Pt(self.style.paragraph_spacing_after)
         pf.line_spacing = self.style.line_spacing
+
+    def _shade_paragraph(self, paragraph):
+        """Apply page background shading to a paragraph for compatibility."""
+        if self.style.dark_mode:
+            bg_hex = self.style._bg_hex()
+            shading = parse_xml(
+                f'<w:shd {nsdecls("w")} w:fill="{bg_hex}" w:val="clear"/>'
+            )
+            paragraph._p.get_or_add_pPr().append(shading)
 
     # ------------------------------------------------------------------
     # Helper: apply font to a run
@@ -78,20 +105,120 @@ class DocumentEngine:
             run.underline = underline
 
     # ------------------------------------------------------------------
+    # Heading bar (gold bar with dark text)
+    # ------------------------------------------------------------------
+
+    def _add_heading_bar(self, text: str, level: int = 1):
+        """Add a full-width gold heading bar using a shaded table cell."""
+        bar_hex = self.style._heading_bar_hex()
+        bg_hex = self.style._bg_hex()
+
+        table = self.doc.add_table(rows=1, cols=1)
+        table.alignment = WD_TABLE_ALIGNMENT.CENTER
+
+        # Make table span full width
+        tbl = table._tbl
+        tbl_pr = tbl.tblPr if tbl.tblPr is not None else parse_xml(
+            f'<w:tblPr {nsdecls("w")}/>'
+        )
+        # Set table width to 100%
+        tbl_w = parse_xml(
+            f'<w:tblW {nsdecls("w")} w:w="5000" w:type="pct"/>'
+        )
+        # Remove existing tblW if present
+        for existing in tbl_pr.findall(qn('w:tblW')):
+            tbl_pr.remove(existing)
+        tbl_pr.append(tbl_w)
+
+        # Remove table borders (the bar is the fill itself)
+        borders = parse_xml(
+            f'<w:tblBorders {nsdecls("w")}>'
+            f'  <w:top w:val="single" w:sz="4" w:color="{bar_hex}"/>'
+            f'  <w:bottom w:val="single" w:sz="4" w:color="{bar_hex}"/>'
+            f'  <w:left w:val="single" w:sz="4" w:color="{bar_hex}"/>'
+            f'  <w:right w:val="single" w:sz="4" w:color="{bar_hex}"/>'
+            f'  <w:insideH w:val="none" w:sz="0" w:color="000000"/>'
+            f'  <w:insideV w:val="none" w:sz="0" w:color="000000"/>'
+            f'</w:tblBorders>'
+        )
+        for existing in tbl_pr.findall(qn('w:tblBorders')):
+            tbl_pr.remove(existing)
+        tbl_pr.append(borders)
+
+        cell = table.cell(0, 0)
+        cell.text = ""
+
+        # Apply gold background fill
+        tc_pr = cell._tc.get_or_add_tcPr()
+        shading = parse_xml(
+            f'<w:shd {nsdecls("w")} w:fill="{bar_hex}" w:val="clear"/>'
+        )
+        tc_pr.append(shading)
+
+        # Cell margins for padding
+        tc_mar = parse_xml(
+            f'<w:tcMar {nsdecls("w")}>'
+            f'  <w:top w:w="60" w:type="dxa"/>'
+            f'  <w:bottom w:w="60" w:type="dxa"/>'
+            f'  <w:left w:w="115" w:type="dxa"/>'
+            f'  <w:right w:w="115" w:type="dxa"/>'
+            f'</w:tcMar>'
+        )
+        tc_pr.append(tc_mar)
+
+        p = cell.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p.paragraph_format.space_before = Pt(2)
+        p.paragraph_format.space_after = Pt(2)
+
+        if level == 1:
+            run = p.add_run(text)
+            self._apply_run_style(
+                run,
+                font_name=self.style.heading_font,
+                size=self.style.heading_size,
+                color_key=self.style.heading_bar_text_color,
+                bold=self.style.heading_bold,
+            )
+        else:
+            run = p.add_run(text)
+            self._apply_run_style(
+                run,
+                font_name=self.style.subheading_font,
+                size=self.style.subheading_size - 1,
+                color_key=self.style.heading_bar_text_color,
+                bold=True,
+            )
+
+    # ------------------------------------------------------------------
     # Title page
     # ------------------------------------------------------------------
 
     def add_title_page(self, title: str, subtitle: str = "",
                        author: str = "", formatted_by: str = "",
                        version_date: str = "", extra_lines: List[str] = None):
-        """Create a formatted title page."""
-        # Top spacing
-        for _ in range(4):
-            self.doc.add_paragraph("")
+        """Create a formatted title page with emblem and dark background."""
+        # Republic emblem
+        if self.style.show_emblem:
+            p = self.doc.add_paragraph()
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            self._shade_paragraph(p)
+            run = p.add_run(REPUBLIC_EMBLEM)
+            self._apply_run_style(
+                run,
+                size=72,
+                color_key=self.style.accent_color,
+            )
+
+        # Spacing
+        for _ in range(2):
+            p = self.doc.add_paragraph("")
+            self._shade_paragraph(p)
 
         # Title
         p = self.doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        self._shade_paragraph(p)
         run = p.add_run(title)
         self._apply_run_style(
             run,
@@ -105,6 +232,7 @@ class DocumentEngine:
         if subtitle:
             p = self.doc.add_paragraph()
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            self._shade_paragraph(p)
             run = p.add_run(subtitle)
             self._apply_run_style(
                 run,
@@ -113,13 +241,14 @@ class DocumentEngine:
                 color_key=self.style.subtitle_color,
             )
 
-        # Decorative divider
-        self._add_divider()
+        # Gold divider line
+        self._add_gold_line()
 
-        # Version / date line
+        # Version / date
         if version_date:
             p = self.doc.add_paragraph()
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            self._shade_paragraph(p)
             run = p.add_run(f"Latest Version: {version_date}")
             self._apply_run_style(
                 run,
@@ -131,10 +260,12 @@ class DocumentEngine:
 
         # Author / formatted by
         if author or formatted_by:
-            self.doc.add_paragraph("")
+            p = self.doc.add_paragraph("")
+            self._shade_paragraph(p)
             if author:
                 p = self.doc.add_paragraph()
                 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                self._shade_paragraph(p)
                 run = p.add_run(f"Created by: {author}")
                 self._apply_run_style(
                     run, size=10, color_key="medium_gray", italic=True
@@ -142,21 +273,24 @@ class DocumentEngine:
             if formatted_by:
                 p = self.doc.add_paragraph()
                 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                self._shade_paragraph(p)
                 run = p.add_run(f"Formatted by: {formatted_by}")
                 self._apply_run_style(
                     run, size=10, color_key="medium_gray", italic=True
                 )
 
-        # Extra lines (e.g., unit info, server name)
+        # Extra lines
         if extra_lines:
-            self.doc.add_paragraph("")
+            p = self.doc.add_paragraph("")
+            self._shade_paragraph(p)
             for line in extra_lines:
                 p = self.doc.add_paragraph()
                 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                self._shade_paragraph(p)
                 run = p.add_run(line)
                 self._apply_run_style(run, size=10, color_key="medium_gray")
 
-        # Page break after title page
+        # Page break
         self.doc.add_page_break()
 
     # ------------------------------------------------------------------
@@ -164,39 +298,40 @@ class DocumentEngine:
     # ------------------------------------------------------------------
 
     def add_table_of_contents(self, entries: List[dict] = None):
-        """Add a Table of Contents page.
-
-        If entries is None, uses internally tracked headings.
-        Each entry: {"title": str, "page": str (optional)}
-        """
-        self.add_heading(self.style.toc_title, level=1, track_toc=False)
-        self.doc.add_paragraph("")
+        """Add a Table of Contents page with gold bullets."""
+        self._add_heading_bar(self.style.toc_title)
+        p = self.doc.add_paragraph("")
+        self._shade_paragraph(p)
 
         items = entries or [{"title": t} for t in self._toc_entries]
+        symbol = self.style.section_symbol or "\u2022"  # bullet
 
         for item in items:
             p = self.doc.add_paragraph()
-            title_text = item.get("title", "")
-            page_text = item.get("page", "")
+            p.paragraph_format.left_indent = Inches(0.5)
+            p.paragraph_format.space_before = Pt(3)
+            p.paragraph_format.space_after = Pt(3)
+            self._shade_paragraph(p)
 
-            run = p.add_run(title_text)
+            # Gold bullet
+            bullet_run = p.add_run(f"{symbol}  ")
             self._apply_run_style(
-                run,
+                bullet_run,
+                font_name=self.style.body_font,
+                size=self.style.body_size,
+                color_key=self.style.accent_color,
+                bold=True,
+            )
+
+            # Entry text
+            title_text = item.get("title", "")
+            text_run = p.add_run(title_text)
+            self._apply_run_style(
+                text_run,
                 font_name=self.style.body_font,
                 size=self.style.body_size,
                 color_key=self.style.body_color,
             )
-
-            if page_text:
-                # Add dotted leader with page number
-                tab_run = p.add_run(
-                    "\t" + "." * 40 + "\t" + str(page_text)
-                )
-                self._apply_run_style(
-                    tab_run,
-                    size=self.style.body_size,
-                    color_key="medium_gray",
-                )
 
         self.doc.add_page_break()
 
@@ -205,31 +340,24 @@ class DocumentEngine:
     # ------------------------------------------------------------------
 
     def add_heading(self, text: str, level: int = 1, track_toc: bool = True):
-        """Add a styled heading. level 1 = section, level 2 = subsection."""
+        """Add a styled heading. level 1 = gold bar, level 2 = gold text."""
         if track_toc and level <= 2:
             self._toc_entries.append(text)
 
-        prefix = ""
         if self.style.use_section_symbols and self.style.section_symbol:
-            prefix = f"{self.style.section_symbol} "
-            text = f"{prefix}{text} {self.style.section_symbol}"
-
-        p = self.doc.add_paragraph()
-        p.alignment = WD_ALIGN_PARAGRAPH.CENTER if level == 1 else WD_ALIGN_PARAGRAPH.LEFT
-        p.paragraph_format.space_before = Pt(18 if level == 1 else 12)
-        p.paragraph_format.space_after = Pt(8)
+            text = f"{self.style.section_symbol} {text} {self.style.section_symbol}"
 
         if level == 1:
-            run = p.add_run(text)
-            self._apply_run_style(
-                run,
-                font_name=self.style.heading_font,
-                size=self.style.heading_size,
-                color_key=self.style.heading_color,
-                bold=self.style.heading_bold,
-            )
-            self._add_divider()
+            # Add small spacer before the bar
+            p = self.doc.add_paragraph("")
+            self._shade_paragraph(p)
+            self._add_heading_bar(text, level=1)
         else:
+            p = self.doc.add_paragraph()
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p.paragraph_format.space_before = Pt(14)
+            p.paragraph_format.space_after = Pt(6)
+            self._shade_paragraph(p)
             run = p.add_run(text)
             self._apply_run_style(
                 run,
@@ -255,6 +383,7 @@ class DocumentEngine:
             "right": WD_ALIGN_PARAGRAPH.RIGHT,
         }
         p.alignment = align_map.get(alignment, WD_ALIGN_PARAGRAPH.LEFT)
+        self._shade_paragraph(p)
 
         if indent > 0:
             p.paragraph_format.left_indent = Inches(indent)
@@ -265,7 +394,7 @@ class DocumentEngine:
             font_name=self.style.body_font,
             size=self.style.body_size,
             color_key=color_key or self.style.body_color,
-            bold=bold,
+            bold=bold or self.style.body_bold,
             italic=italic,
         )
         return p
@@ -276,6 +405,7 @@ class DocumentEngine:
         segments: list of (text, color_key, bold, italic) tuples.
         """
         p = self.doc.add_paragraph()
+        self._shade_paragraph(p)
         for seg in segments:
             text = seg[0]
             color = seg[1] if len(seg) > 1 else None
@@ -303,13 +433,13 @@ class DocumentEngine:
         )
 
     def add_host_info(self, text: str):
-        """Add host-only information (red) — not to be read aloud."""
+        """Add host-only information (red)."""
         return self.add_paragraph(
             text, color_key=self.style.host_info_color, bold=True
         )
 
     def add_important_info(self, text: str):
-        """Add important info like adverts and commands (blue)."""
+        """Add important info (blue)."""
         return self.add_paragraph(
             text, color_key=self.style.important_info_color, bold=True
         )
@@ -318,13 +448,26 @@ class DocumentEngine:
     # Lists
     # ------------------------------------------------------------------
 
-    def add_bullet_list(self, items: List[str], indent: float = 0.25,
+    def add_bullet_list(self, items: List[str], indent: float = 0.4,
                         color_key: str = None):
-        """Add a bulleted list."""
+        """Add a bulleted list with gold bullets."""
         for item in items:
-            p = self.doc.add_paragraph(style="List Bullet")
-            p.clear()
+            p = self.doc.add_paragraph()
             p.paragraph_format.left_indent = Inches(indent)
+            p.paragraph_format.space_before = Pt(1)
+            p.paragraph_format.space_after = Pt(1)
+            self._shade_paragraph(p)
+
+            # Gold bullet marker
+            bullet_run = p.add_run("\u2022  ")
+            self._apply_run_style(
+                bullet_run,
+                font_name=self.style.body_font,
+                size=self.style.body_size,
+                color_key=self.style.accent_color,
+                bold=True,
+            )
+
             run = p.add_run(item)
             self._apply_run_style(
                 run,
@@ -333,14 +476,27 @@ class DocumentEngine:
                 color_key=color_key or self.style.body_color,
             )
 
-    def add_numbered_list(self, items: List[str], indent: float = 0.25,
+    def add_numbered_list(self, items: List[str], indent: float = 0.4,
                           color_key: str = None, start_num: int = 1):
-        """Add a numbered list with manual numbering for reliability."""
+        """Add a numbered list with gold numbers."""
         for i, item in enumerate(items, start=start_num):
             p = self.doc.add_paragraph()
             p.paragraph_format.left_indent = Inches(indent)
-            p.paragraph_format.first_line_indent = Inches(-0.25)
-            run = p.add_run(f"{i}. {item}")
+            p.paragraph_format.space_before = Pt(1)
+            p.paragraph_format.space_after = Pt(1)
+            self._shade_paragraph(p)
+
+            # Gold number
+            num_run = p.add_run(f"{i}. ")
+            self._apply_run_style(
+                num_run,
+                font_name=self.style.body_font,
+                size=self.style.body_size,
+                color_key=self.style.accent_color,
+                bold=True,
+            )
+
+            run = p.add_run(item)
             self._apply_run_style(
                 run,
                 font_name=self.style.body_font,
@@ -348,15 +504,27 @@ class DocumentEngine:
                 color_key=color_key or self.style.body_color,
             )
 
-    def add_lettered_sub_list(self, items: List[str], indent: float = 0.5,
+    def add_lettered_sub_list(self, items: List[str], indent: float = 0.7,
                               color_key: str = None):
         """Add a sub-list with letter labels (a., b., c., ...)."""
         for i, item in enumerate(items):
             letter = chr(ord("a") + i)
             p = self.doc.add_paragraph()
             p.paragraph_format.left_indent = Inches(indent)
-            p.paragraph_format.first_line_indent = Inches(-0.25)
-            run = p.add_run(f"{letter}. {item}")
+            p.paragraph_format.space_before = Pt(1)
+            p.paragraph_format.space_after = Pt(1)
+            self._shade_paragraph(p)
+
+            ltr_run = p.add_run(f"{letter}. ")
+            self._apply_run_style(
+                ltr_run,
+                font_name=self.style.body_font,
+                size=self.style.body_size,
+                color_key=self.style.accent_color,
+                bold=True,
+            )
+
+            run = p.add_run(item)
             self._apply_run_style(
                 run,
                 font_name=self.style.body_font,
@@ -373,19 +541,21 @@ class DocumentEngine:
         """Add a styled question/answer pair."""
         # Question
         p = self.doc.add_paragraph()
-        p.paragraph_format.left_indent = Inches(0.25)
+        p.paragraph_format.left_indent = Inches(0.3)
+        self._shade_paragraph(p)
         q_run = p.add_run(f"{q_label}: {question}")
         self._apply_run_style(
             q_run,
             font_name=self.style.body_font,
             size=self.style.body_size,
-            color_key=self.style.heading_color,
+            color_key=self.style.accent_color,
             bold=True,
         )
 
         # Answer
         p = self.doc.add_paragraph()
-        p.paragraph_format.left_indent = Inches(0.5)
+        p.paragraph_format.left_indent = Inches(0.6)
+        self._shade_paragraph(p)
         a_run = p.add_run(f"{a_label}: {answer}")
         self._apply_run_style(
             a_run,
@@ -401,10 +571,33 @@ class DocumentEngine:
 
     def add_table(self, headers: List[str], rows: List[List[str]],
                   col_widths: List[float] = None):
-        """Add a styled table with header row."""
+        """Add a styled table with gold header row on dark background."""
         table = self.doc.add_table(rows=1 + len(rows), cols=len(headers))
         table.alignment = WD_TABLE_ALIGNMENT.CENTER
-        table.style = "Table Grid"
+
+        bar_hex = self.style._heading_bar_hex()
+        bg_hex = self.style._bg_hex()
+        accent = self.style.resolve_color(self.style.accent_color)
+        accent_hex = f"{accent[0]:02X}{accent[1]:02X}{accent[2]:02X}"
+
+        # Table borders
+        tbl = table._tbl
+        tbl_pr = tbl.tblPr if tbl.tblPr is not None else parse_xml(
+            f'<w:tblPr {nsdecls("w")}/>'
+        )
+        tbl_borders = parse_xml(
+            f'<w:tblBorders {nsdecls("w")}>'
+            f'  <w:top w:val="single" w:sz="4" w:color="{accent_hex}"/>'
+            f'  <w:bottom w:val="single" w:sz="4" w:color="{accent_hex}"/>'
+            f'  <w:left w:val="single" w:sz="4" w:color="{accent_hex}"/>'
+            f'  <w:right w:val="single" w:sz="4" w:color="{accent_hex}"/>'
+            f'  <w:insideH w:val="single" w:sz="4" w:color="{accent_hex}"/>'
+            f'  <w:insideV w:val="single" w:sz="4" w:color="{accent_hex}"/>'
+            f'</w:tblBorders>'
+        )
+        for existing in tbl_pr.findall(qn('w:tblBorders')):
+            tbl_pr.remove(existing)
+        tbl_pr.append(tbl_borders)
 
         # Header row
         hdr_cells = table.rows[0].cells
@@ -417,16 +610,15 @@ class DocumentEngine:
                 run,
                 font_name=self.style.heading_font,
                 size=self.style.body_size,
-                color_key="white",
+                color_key=self.style.heading_bar_text_color,
                 bold=True,
             )
-            # Header background
-            accent = self.style.resolve_color(self.style.accent_color)
-            hex_color = f"{accent[0]:02X}{accent[1]:02X}{accent[2]:02X}"
+            # Gold header background
+            tc_pr = hdr_cells[i]._tc.get_or_add_tcPr()
             shading = parse_xml(
-                f'<w:shd {nsdecls("w")} w:fill="{hex_color}"/>'
+                f'<w:shd {nsdecls("w")} w:fill="{bar_hex}" w:val="clear"/>'
             )
-            hdr_cells[i]._tc.get_or_add_tcPr().append(shading)
+            tc_pr.append(shading)
 
         # Data rows
         for r_idx, row in enumerate(rows):
@@ -441,6 +633,13 @@ class DocumentEngine:
                     size=self.style.body_size - 1,
                     color_key=self.style.body_color,
                 )
+                # Dark cell background
+                if self.style.dark_mode:
+                    tc_pr = cells[c_idx]._tc.get_or_add_tcPr()
+                    shading = parse_xml(
+                        f'<w:shd {nsdecls("w")} w:fill="{bg_hex}" w:val="clear"/>'
+                    )
+                    tc_pr.append(shading)
 
         # Column widths
         if col_widths:
@@ -460,12 +659,13 @@ class DocumentEngine:
         for i, rank in enumerate(chain):
             p = self.doc.add_paragraph()
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            self._shade_paragraph(p)
             run = p.add_run(rank)
             self._apply_run_style(
                 run,
                 font_name=self.style.heading_font,
                 size=self.style.body_size + 1,
-                color_key=self.style.heading_color,
+                color_key=self.style.accent_color,
                 bold=True,
             )
 
@@ -474,10 +674,11 @@ class DocumentEngine:
                 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
                 p.paragraph_format.space_before = Pt(0)
                 p.paragraph_format.space_after = Pt(0)
+                self._shade_paragraph(p)
                 run = p.add_run("\u2193")  # down arrow
                 self._apply_run_style(
                     run,
-                    size=self.style.body_size + 4,
+                    size=self.style.body_size + 6,
                     color_key=self.style.accent_color,
                     bold=True,
                 )
@@ -486,29 +687,35 @@ class DocumentEngine:
     # Visual elements
     # ------------------------------------------------------------------
 
-    def _add_divider(self):
-        """Add a colored horizontal divider line."""
+    def _add_gold_line(self):
+        """Add a thin gold horizontal line."""
         p = self.doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p.paragraph_format.space_before = Pt(2)
-        p.paragraph_format.space_after = Pt(6)
+        p.paragraph_format.space_before = Pt(4)
+        p.paragraph_format.space_after = Pt(4)
+        self._shade_paragraph(p)
 
         divider_char = "\u2500"  # box-drawing horizontal
-        run = p.add_run(divider_char * 50)
+        run = p.add_run(divider_char * 60)
         self._apply_run_style(
             run,
-            size=8,
+            size=6,
             color_key=self.style.divider_color,
         )
 
+    def _add_divider(self):
+        """Add a gold divider (alias)."""
+        self._add_gold_line()
+
     def add_divider(self):
         """Public method to add a divider."""
-        self._add_divider()
+        self._add_gold_line()
 
     def add_spacer(self, lines: int = 1):
         """Add blank lines for spacing."""
         for _ in range(lines):
-            self.doc.add_paragraph("")
+            p = self.doc.add_paragraph("")
+            self._shade_paragraph(p)
 
     def add_page_break(self):
         """Add a page break."""
@@ -519,22 +726,23 @@ class DocumentEngine:
     # ------------------------------------------------------------------
 
     def add_color_code_legend(self):
-        """Add a color code explanation block (like the K Company docs)."""
-        self.add_heading("Color Codes", level=2, track_toc=False)
+        """Add a color code explanation block."""
+        self._add_heading_bar("Color Codes", level=2)
 
         codes = [
             ("Green text", self.style.read_aloud_color,
-             "you will read aloud to the trainee."),
+             "  — you will read aloud to the trainee."),
             ("Red text", self.style.host_info_color,
-             "is information that you will need; Do not read aloud."),
+             "  — is information that you will need; Do not read aloud."),
             ("Blue text", self.style.important_info_color,
-             "is important information (adverts, droid numbers, etc.)"),
+             "  — is important information (adverts, droid numbers, etc.)"),
         ]
 
         for label, color, desc in codes:
             p = self.doc.add_paragraph()
-            p.paragraph_format.left_indent = Inches(0.25)
-            colored_run = p.add_run(f"{label} ")
+            p.paragraph_format.left_indent = Inches(0.4)
+            self._shade_paragraph(p)
+            colored_run = p.add_run(label)
             self._apply_run_style(
                 colored_run,
                 font_name=self.style.body_font,
@@ -555,7 +763,7 @@ class DocumentEngine:
     # ------------------------------------------------------------------
 
     def add_callout_box(self, text: str, style_type: str = "info"):
-        """Add a bordered callout box. style_type: info, warning, note."""
+        """Add a bordered callout box on dark background."""
         color_map = {
             "info": self.style.important_info_color,
             "warning": self.style.host_info_color,
@@ -563,9 +771,26 @@ class DocumentEngine:
         }
         color = color_map.get(style_type, self.style.accent_color)
 
-        # Use a single-cell table as a callout box
+        bg_hex = self.style._bg_hex()
+        resolved = self.style.resolve_color(color)
+        border_hex = f"{resolved[0]:02X}{resolved[1]:02X}{resolved[2]:02X}"
+
+        # Slightly lighter dark background for callout
+        callout_bg = self.style.resolve_color("callout_bg")
+        callout_hex = f"{callout_bg[0]:02X}{callout_bg[1]:02X}{callout_bg[2]:02X}"
+
         table = self.doc.add_table(rows=1, cols=1)
         table.alignment = WD_TABLE_ALIGNMENT.CENTER
+
+        # Full-width
+        tbl_pr = table._tbl.tblPr
+        tbl_w = parse_xml(
+            f'<w:tblW {nsdecls("w")} w:w="5000" w:type="pct"/>'
+        )
+        for existing in tbl_pr.findall(qn('w:tblW')):
+            tbl_pr.remove(existing)
+        tbl_pr.append(tbl_w)
+
         cell = table.cell(0, 0)
         cell.text = ""
 
@@ -580,27 +805,25 @@ class DocumentEngine:
             bold=True,
         )
 
-        # Apply border color via XML
-        resolved = self.style.resolve_color(color)
-        hex_color = f"{resolved[0]:02X}{resolved[1]:02X}{resolved[2]:02X}"
+        # Border and background
         tc_pr = cell._tc.get_or_add_tcPr()
         borders = parse_xml(
             f'<w:tcBorders {nsdecls("w")}>'
-            f'  <w:top w:val="single" w:sz="12" w:color="{hex_color}"/>'
-            f'  <w:bottom w:val="single" w:sz="12" w:color="{hex_color}"/>'
-            f'  <w:left w:val="single" w:sz="12" w:color="{hex_color}"/>'
-            f'  <w:right w:val="single" w:sz="12" w:color="{hex_color}"/>'
-            f"</w:tcBorders>"
+            f'  <w:top w:val="single" w:sz="8" w:color="{border_hex}"/>'
+            f'  <w:bottom w:val="single" w:sz="8" w:color="{border_hex}"/>'
+            f'  <w:left w:val="single" w:sz="8" w:color="{border_hex}"/>'
+            f'  <w:right w:val="single" w:sz="8" w:color="{border_hex}"/>'
+            f'</w:tcBorders>'
         )
         tc_pr.append(borders)
 
-        # Light background shading
         shading = parse_xml(
-            f'<w:shd {nsdecls("w")} w:fill="F5F5F5"/>'
+            f'<w:shd {nsdecls("w")} w:fill="{callout_hex}" w:val="clear"/>'
         )
         tc_pr.append(shading)
 
-        self.doc.add_paragraph("")
+        p = self.doc.add_paragraph("")
+        self._shade_paragraph(p)
 
     # ------------------------------------------------------------------
     # Header / footer metadata line
@@ -609,7 +832,7 @@ class DocumentEngine:
     def add_metadata_line(self, author: str = "", formatted_by: str = "",
                           created: str = "", updated: str = "",
                           alignment: str = "right"):
-        """Add a small metadata attribution line (like top-right of pages)."""
+        """Add a small metadata attribution line."""
         parts = []
         if author:
             parts.append(f"Created By: {author}")
@@ -631,6 +854,7 @@ class DocumentEngine:
 
         p = self.doc.add_paragraph()
         p.alignment = align_map.get(alignment, WD_ALIGN_PARAGRAPH.RIGHT)
+        self._shade_paragraph(p)
         text = " | ".join(parts)
         run = p.add_run(text)
         self._apply_run_style(
@@ -654,9 +878,9 @@ class DocumentEngine:
         """Save the document as PDF.
 
         Tries LibreOffice first for best fidelity, then falls back to
-        a basic fpdf2 text-based conversion.
+        a basic text-based PDF.
         """
-        # First save as docx to a temp location
+        # First save as docx
         docx_path = filepath.rsplit(".", 1)[0] + ".docx"
         self.save_docx(docx_path)
 
@@ -675,14 +899,11 @@ class DocumentEngine:
                     os.rename(expected_pdf, filepath)
                 return filepath
 
-        # Fallback: minimal PDF generation from document text
+        # Fallback: minimal PDF
         return self._minimal_pdf_fallback(filepath)
 
     def _minimal_pdf_fallback(self, filepath: str) -> str:
-        """Generate a basic PDF using minimal built-in PDF writing.
-
-        This avoids external dependencies by writing PDF structure directly.
-        """
+        """Generate a basic PDF from the document's text content."""
         lines = []
         for para in self.doc.paragraphs:
             text = para.text.strip()
@@ -696,7 +917,6 @@ class DocumentEngine:
             else:
                 lines.append(("", False))
 
-        # Build a minimal valid PDF
         objects = []
         obj_id = 0
 
@@ -706,11 +926,8 @@ class DocumentEngine:
             objects.append((obj_id, content))
             return obj_id
 
-        # Catalog
-        catalog_id = add_obj(None)  # placeholder
-        pages_id = add_obj(None)    # placeholder
-
-        # Font
+        catalog_id = add_obj(None)
+        pages_id = add_obj(None)
         font_id = add_obj(
             b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>"
         )
@@ -718,12 +935,9 @@ class DocumentEngine:
             b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>"
         )
 
-        # Build page content
-        page_width, page_height = 612, 792  # US Letter
+        page_width, page_height = 612, 792
         margin = 72
-        usable_width = page_width - 2 * margin
         y = page_height - margin
-
         content_streams = []
         current_stream_lines = []
 
@@ -736,7 +950,6 @@ class DocumentEngine:
             y = page_height - margin
 
         def wrap_text(text, chars_per_line=85):
-            """Simple word-wrap."""
             words = text.split()
             result_lines = []
             current = ""
@@ -752,9 +965,13 @@ class DocumentEngine:
             return result_lines if result_lines else [""]
 
         def escape_pdf(text):
-            """Escape special PDF string characters."""
             return text.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
 
+        # Dark background rectangle
+        current_stream_lines.append(
+            f"0.231 0.231 0.231 rg "
+            f"0 0 {page_width} {page_height} re f"
+        )
         current_stream_lines.append("BT")
         for text, is_heading in lines:
             if not text:
@@ -762,6 +979,10 @@ class DocumentEngine:
                 if y < margin:
                     current_stream_lines.append("ET")
                     flush_page()
+                    current_stream_lines.append(
+                        f"0.231 0.231 0.231 rg "
+                        f"0 0 {page_width} {page_height} re f"
+                    )
                     current_stream_lines.append("BT")
                 continue
 
@@ -769,17 +990,24 @@ class DocumentEngine:
             line_height = font_size * 1.4
             font_ref = "/F2" if is_heading else "/F1"
 
+            # Set text color to white for dark bg
+            current_stream_lines.append("0.91 0.91 0.91 rg")
+
             wrapped = wrap_text(text, 75 if is_heading else 85)
             for wline in wrapped:
                 if y - line_height < margin:
                     current_stream_lines.append("ET")
                     flush_page()
+                    current_stream_lines.append(
+                        f"0.231 0.231 0.231 rg "
+                        f"0 0 {page_width} {page_height} re f"
+                    )
                     current_stream_lines.append("BT")
+                    current_stream_lines.append("0.91 0.91 0.91 rg")
 
                 safe_text = escape_pdf(wline)
                 x = margin
                 if is_heading:
-                    # Rough center
                     approx_width = len(wline) * font_size * 0.5
                     x = max(margin, (page_width - approx_width) / 2)
 
@@ -793,14 +1021,12 @@ class DocumentEngine:
         current_stream_lines.append("ET")
         flush_page()
 
-        # Create content stream objects and page objects
         page_ids = []
         for stream_bytes in content_streams:
-            stream_id = add_obj(stream_bytes)  # will format as stream
-            page_id = add_obj(None)  # placeholder for page
+            stream_id = add_obj(stream_bytes)
+            page_id = add_obj(None)
             page_ids.append((page_id, stream_id))
 
-        # Now build the actual PDF bytes
         pdf_parts = [b"%PDF-1.4\n"]
         offsets = {}
 
@@ -810,22 +1036,16 @@ class DocumentEngine:
             pdf_parts.append(data)
             pdf_parts.append(b"\nendobj\n")
 
-        # Catalog
         write_obj(catalog_id,
                   f"<< /Type /Catalog /Pages {pages_id} 0 R >>".encode())
-
-        # Pages
         kids = " ".join(f"{pid} 0 R" for pid, _ in page_ids)
         write_obj(pages_id,
                   f"<< /Type /Pages /Kids [{kids}] /Count {len(page_ids)} >>".encode())
-
-        # Fonts
         write_obj(font_id,
                   b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>")
         write_obj(font_bold_id,
                   b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>")
 
-        # Streams and pages
         for page_id, stream_id in page_ids:
             stream_data = None
             for oid, content in objects:
@@ -845,7 +1065,6 @@ class DocumentEngine:
                        f"/Resources << /Font << /F1 {font_id} 0 R "
                        f"/F2 {font_bold_id} 0 R >> >> >>").encode())
 
-        # Cross-reference table
         xref_offset = len(b"".join(pdf_parts))
         pdf_parts.append(b"xref\n")
         pdf_parts.append(f"0 {obj_id + 1}\n".encode())

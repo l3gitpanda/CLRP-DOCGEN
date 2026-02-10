@@ -1,0 +1,484 @@
+# =============================================================================
+# K Company Requests Document
+# Request procedures for 327th Star Corps / K Company
+# =============================================================================
+
+style:
+  theme: "k_company"
+
+output:
+  path: "output/K_Company_Requests.docx"
+  format: "docx"
+
+content:
+  # ---- Title Page ----
+  - type: title_page
+    title: "K Company Requests"
+    subtitle: "327th Star Corps — K Company"
+    author: "KC Leadership"
+    formatted_by: "KC Leadership"
+    version_date: "02/10/2026"
+    extra_lines:
+      - "327th Star Corps"
+      - "K Company"
+
+  # ---- Table of Contents ----
+  - type: table_of_contents
+    entries:
+      - title: "Request Overview"
+      - title: "Whitelist Requests"
+      - title: "Role Requests"
+      - title: "Roster Requests"
+      - title: "LOA / ROA Requests"
+      - title: "Transfer Requests"
+      - title: "Subdivision Requests"
+      - title: "Sub-Company Requests"
+      - title: "Event / Training Requests"
+      - title: "Request Channels Reference"
+
+  # ---- Request Overview ----
+  - type: heading
+    text: "Request Overview"
+    level: 1
+
+  - type: paragraph
+    text: >
+      This document outlines the standard procedures for all K Company and 327th
+      Star Corps related requests. All requests must follow the correct format
+      and be submitted in the proper channel. Failure to follow formats may
+      result in delays or denial.
+
+  - type: callout
+    text: "Always double-check your request format before submitting. Incorrect formats will be ignored."
+    callout_style: "warning"
+
+  - type: page_break
+
+  # ---- Whitelist Requests ----
+  - type: heading
+    text: "Whitelist Requests"
+    level: 1
+
+  - type: paragraph
+    text: >
+      Whitelist requests are made when a new trooper needs access to 327th or
+      K Company jobs, weapons, or equipment on the server.
+
+  - type: heading
+    text: "When to Submit"
+    level: 2
+
+  - type: bullet_list
+    items:
+      - "After a successful tryout — the host is responsible for submitting."
+      - "When a trooper is promoted and requires new whitelists."
+      - "When a trooper transfers in from another battalion."
+      - "When a trooper joins a subdivision and needs subdivision-specific whitelists."
+
+  - type: heading
+    text: "327th Trooper Whitelist"
+    level: 2
+
+  - type: paragraph
+    text: "Submit in the 327th ticket system or designated whitelist channel:"
+
+  - type: callout
+    text: "@ Need 327th Trooper & Heavy whitelist for [Name] — SteamID64: [SteamID]"
+    callout_style: "info"
+
+  - type: heading
+    text: "K Company Whitelist"
+    level: 2
+
+  - type: paragraph
+    text: "Submit after KC tryout completion:"
+
+  - type: callout
+    text: "@ Need K Company whitelist for [Name] — SteamID64: [SteamID]"
+    callout_style: "info"
+
+  - type: heading
+    text: "Subdivision Whitelists"
+    level: 2
+
+  - type: paragraph
+    text: "When a trooper passes a subdivision tryout:"
+
+  - type: callout
+    text: "@ Need [Subdivision Name] whitelist for [Name] — SteamID64: [SteamID]"
+    callout_style: "info"
+
+  - type: paragraph
+    text: "Host should also note the subdivision role to add (e.g., Sapper, Recon, Medic)."
+    italic: true
+
+  - type: page_break
+
+  # ---- Role Requests ----
+  - type: heading
+    text: "Role Requests"
+    level: 1
+
+  - type: paragraph
+    text: >
+      Role requests are submitted in the #role-request-channel on Discord.
+      These assign the correct Discord roles for server integration and
+      battalion communication access.
+
+  - type: heading
+    text: "New Trooper Role Request Format"
+    level: 2
+
+  - type: callout
+    text: >
+      Name: [In-Game Name]
+      SteamID64: [SteamID]
+      Battalion: 327th Star Corps
+      Roles Needed: 327th Star Corps
+      @327th Star Corps XO
+    callout_style: "info"
+
+  - type: heading
+    text: "K Company Role Request Format"
+    level: 2
+
+  - type: callout
+    text: >
+      Name: [In-Game Name]
+      SteamID64: [SteamID]
+      Battalion: 327th Star Corps
+      Roles Needed: 327th: K Company
+      @327th Star Corps XO
+    callout_style: "info"
+
+  - type: heading
+    text: "Promotion Role Request Format"
+    level: 2
+
+  - type: callout
+    text: >
+      Name: [In-Game Name]
+      Promoted To: [New Rank]
+      Roles Needed: [Role if rank-specific role exists]
+      @327th Star Corps XO
+    callout_style: "info"
+
+  - type: page_break
+
+  # ---- Roster Requests ----
+  - type: heading
+    text: "Roster Requests"
+    level: 1
+
+  - type: paragraph
+    text: >
+      Roster requests ensure new troopers, promotions, and transfers are
+      reflected on the official 327th or K Company roster.
+
+  - type: heading
+    text: "New Trooper Roster Add"
+    level: 2
+
+  - type: paragraph
+    text: "Submit in #327th-global-request after tryout completion:"
+
+  - type: callout
+    text: >
+      Roster Add Request
+      Name: [Name]
+      Rank: PVT
+      Company: K Company (or Main)
+      Date Joined: [Date]
+      Recruited By: [Recruiter Name]
+    callout_style: "info"
+
+  - type: heading
+    text: "Promotion Roster Update"
+    level: 2
+
+  - type: callout
+    text: >
+      Roster Update Request
+      Name: [Name]
+      Previous Rank: [Old Rank]
+      New Rank: [New Rank]
+      Promoted By: [Officer Name]
+      Date: [Date]
+    callout_style: "info"
+
+  - type: heading
+    text: "Roster Removal"
+    level: 2
+
+  - type: paragraph
+    text: "When a trooper leaves, is discharged, or transfers out:"
+
+  - type: callout
+    text: >
+      Roster Removal Request
+      Name: [Name]
+      Reason: [Discharged / Left / Transferred to (Battalion)]
+      Date: [Date]
+    callout_style: "info"
+
+  - type: page_break
+
+  # ---- LOA / ROA ----
+  - type: heading
+    text: "LOA / ROA Requests"
+    level: 1
+
+  - type: paragraph
+    text: >
+      Leave of Absence (LOA) and Reduced of Activity (ROA) requests must be
+      submitted before the leave period begins. Failure to submit an LOA may
+      result in removal from the roster.
+
+  - type: heading
+    text: "LOA (Leave of Absence)"
+    level: 2
+
+  - type: paragraph
+    text: >
+      You will not be on the server at all during this period. LOAs protect
+      you from being removed for inactivity.
+
+  - type: callout
+    text: >
+      LOA Request
+      Name: [Name]
+      Rank: [Rank]
+      Start Date: [Date]
+      End Date: [Date]
+      Reason: [Brief reason]
+    callout_style: "info"
+
+  - type: heading
+    text: "ROA (Reduced Activity)"
+    level: 2
+
+  - type: paragraph
+    text: >
+      You will be on the server less frequently but still somewhat active.
+
+  - type: callout
+    text: >
+      ROA Request
+      Name: [Name]
+      Rank: [Rank]
+      Start Date: [Date]
+      End Date: [Date]
+      Reason: [Brief reason]
+    callout_style: "info"
+
+  - type: callout
+    text: "LOA/ROA may not exceed 14 days without officer approval. Extensions must be requested before the original end date."
+    callout_style: "warning"
+
+  - type: page_break
+
+  # ---- Transfer Requests ----
+  - type: heading
+    text: "Transfer Requests"
+    level: 1
+
+  - type: paragraph
+    text: >
+      Transfer requests are for troopers wanting to move between battalions
+      or between companies within the 327th.
+
+  - type: heading
+    text: "Transfer Into 327th / K Company"
+    level: 2
+
+  - type: paragraph
+    text: >
+      Troopers from other battalions must complete a 327th tryout. If
+      transferring directly into K Company, they must also complete a KC
+      tryout after passing 327th.
+
+  - type: numbered_list
+    items:
+      - "Trooper contacts 327th leadership expressing interest."
+      - "327th officer conducts a standard tryout."
+      - "If transferring to KC, KC officer conducts KC tryout."
+      - "Whitelist, role, and roster requests are submitted."
+      - "Previous battalion is notified of the transfer."
+
+  - type: heading
+    text: "Transfer Out of 327th / K Company"
+    level: 2
+
+  - type: numbered_list
+    items:
+      - "Trooper informs their commanding officer of intent to transfer."
+      - "CO submits roster removal request."
+      - "Whitelists are removed via ticket."
+      - "Discord roles are updated."
+
+  - type: heading
+    text: "Internal Transfer (327th Main ↔ K Company)"
+    level: 2
+
+  - type: paragraph
+    text: >
+      Moving between main 327th and K Company requires a K Company tryout
+      (if moving into KC). Moving from KC to main 327th requires CO approval.
+
+  - type: callout
+    text: >
+      Internal Transfer Request
+      Name: [Name]
+      Current Company: [Current]
+      Requested Company: [Target]
+      Reason: [Brief reason]
+      Approved By: [Officer]
+    callout_style: "info"
+
+  - type: page_break
+
+  # ---- Subdivision Requests ----
+  - type: heading
+    text: "Subdivision Requests"
+    level: 1
+
+  - type: paragraph
+    text: >
+      Subdivision requests are for troopers wanting to join a specialized
+      squad within K Company or the 327th. Each subdivision has its own
+      requirements and tryout process.
+
+  - type: heading
+    text: "Requesting to Join a Subdivision"
+    level: 2
+
+  - type: numbered_list
+    items:
+      - "Confirm you meet the rank requirement for the subdivision."
+      - "Contact the subdivision leader or a KC officer."
+      - "Complete the subdivision-specific tryout."
+      - "Upon passing, submit whitelist and roster update requests."
+
+  - type: heading
+    text: "Available K Company Subdivisions"
+    level: 2
+
+  - type: table
+    headers: ["Subdivision", "Minimum Rank", "Focus"]
+    rows:
+      - ["Sapper Squad", "PFC", "Engineering, demolitions, fortifications"]
+      - ["Recon Team", "PFC", "Reconnaissance, intel gathering, stealth"]
+
+  - type: paragraph
+    text: "Check with KC leadership for current subdivision availability and openings."
+    italic: true
+
+  - type: page_break
+
+  # ---- Sub-Company Requests ----
+  - type: heading
+    text: "Sub-Company Requests"
+    level: 1
+
+  - type: paragraph
+    text: >
+      Sub-companies operate under the 327th Star Corps umbrella. Joining
+      a sub-company requires meeting specific criteria and completing
+      that company's tryout.
+
+  - type: heading
+    text: "Sub-Company Application Process"
+    level: 2
+
+  - type: numbered_list
+    items:
+      - "Meet the minimum rank requirement (varies by sub-company)."
+      - "Express interest to sub-company leadership."
+      - "Complete the sub-company's tryout process."
+      - "All whitelist, role, and roster requests are handled by the sub-company host."
+
+  - type: callout
+    text: "Joining a sub-company does not remove you from the 327th roster. You serve in both."
+    callout_style: "note"
+
+  - type: page_break
+
+  # ---- Event / Training Requests ----
+  - type: heading
+    text: "Event / Training Requests"
+    level: 1
+
+  - type: paragraph
+    text: >
+      Officers and NCOs may request to host events or trainings for K Company
+      or the broader 327th.
+
+  - type: heading
+    text: "Training Request"
+    level: 2
+
+  - type: callout
+    text: >
+      Training Request
+      Host: [Name and Rank]
+      Type: [Formation Drill / Combat Training / Specialty Training / etc.]
+      Date & Time: [Date / Time EST]
+      Location: [SIM Room / Base / etc.]
+      Expected Attendance: [Number]
+    callout_style: "info"
+
+  - type: heading
+    text: "Event Request"
+    level: 2
+
+  - type: callout
+    text: >
+      Event Request
+      Host: [Name and Rank]
+      Event Type: [Patrol / Joint Op / RP Event / etc.]
+      Date & Time: [Date / Time EST]
+      Participating Units: [K Company / 327th / Joint with (Battalion)]
+      Description: [Brief summary of the event]
+    callout_style: "info"
+
+  - type: heading
+    text: "SIM Room Claim"
+    level: 2
+
+  - type: paragraph
+    text: "When conducting trainings or tryouts, claim a SIM room via comms:"
+
+  - type: callout
+    text: "/comms {327th/KC} Claims SIM/TR [number] | SIM START"
+    callout_style: "info"
+
+  - type: paragraph
+    text: "Remember to SIM Stop and release the room when finished."
+
+  - type: page_break
+
+  # ---- Request Channels Reference ----
+  - type: heading
+    text: "Request Channels Reference"
+    level: 1
+
+  - type: paragraph
+    text: "Quick reference for where to submit each type of request:"
+
+  - type: table
+    headers: ["Request Type", "Channel / Method"]
+    rows:
+      - ["Whitelist", "Ticket System / Admin Request"]
+      - ["Role Request", "#role-request-channel"]
+      - ["Roster Add/Update/Remove", "#327th-global-request"]
+      - ["LOA / ROA", "#327th-loa-roa (or KC channel)"]
+      - ["Transfer In/Out", "Contact CO → Roster/Whitelist channels"]
+      - ["Subdivision Join", "Contact Subdivision Lead"]
+      - ["Training Request", "#327th-nco-general or KC leadership"]
+      - ["Event Request", "#327th-nco-general or KC leadership"]
+      - ["SIM Room Claim", "/comms in-game"]
+      - ["Promotion", "Officers submit in #327th-global-request"]
+
+  - type: callout
+    text: "When in doubt, ask your commanding officer. They can direct you to the right channel."
+    callout_style: "note"

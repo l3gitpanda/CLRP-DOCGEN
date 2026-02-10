@@ -17,9 +17,11 @@ from docx.shared import Pt, Inches, RGBColor
 
 COLORS = {
     # 327th Star Corps gold/amber theme
-    "327th_gold": RGBColor(0xD4, 0xA0, 0x17),
-    "327th_dark_gold": RGBColor(0xB8, 0x86, 0x0B),
-    "327th_light_gold": RGBColor(0xF0, 0xC8, 0x4D),
+    "327th_gold": RGBColor(0xC8, 0x96, 0x16),
+    "327th_dark_gold": RGBColor(0xA0, 0x78, 0x10),
+    "327th_light_gold": RGBColor(0xE8, 0xC8, 0x50),
+    "heading_bar_gold": RGBColor(0xBF, 0x8F, 0x00),
+    "heading_bar_text": RGBColor(0x1A, 0x1A, 0x1A),
 
     # K Company colors
     "kc_orange": RGBColor(0xFF, 0x8C, 0x00),
@@ -33,22 +35,25 @@ COLORS = {
     # Document functional colors
     "black": RGBColor(0x00, 0x00, 0x00),
     "white": RGBColor(0xFF, 0xFF, 0xFF),
+    "off_white": RGBColor(0xE8, 0xE8, 0xE8),
     "dark_gray": RGBColor(0x2D, 0x2D, 0x2D),
-    "medium_gray": RGBColor(0x66, 0x66, 0x66),
+    "page_dark": RGBColor(0x3B, 0x3B, 0x3B),
+    "medium_gray": RGBColor(0x88, 0x88, 0x88),
     "light_gray": RGBColor(0xCC, 0xCC, 0xCC),
+    "callout_bg": RGBColor(0x4A, 0x4A, 0x4A),
 
-    # Instructional color codes (matching K Company tryout doc)
-    "read_aloud_green": RGBColor(0x00, 0x80, 0x00),
-    "host_info_red": RGBColor(0xCC, 0x00, 0x00),
-    "important_blue": RGBColor(0x1A, 0x47, 0x8A),
+    # Instructional color codes (brighter for dark backgrounds)
+    "read_aloud_green": RGBColor(0x55, 0xCC, 0x55),
+    "host_info_red": RGBColor(0xFF, 0x55, 0x55),
+    "important_blue": RGBColor(0x66, 0xBB, 0xFF),
 
-    # JDU temple codes
-    "temple_green": RGBColor(0x00, 0x80, 0x00),
-    "temple_yellow": RGBColor(0xCC, 0xAA, 0x00),
-    "temple_orange": RGBColor(0xFF, 0x8C, 0x00),
-    "temple_red": RGBColor(0xCC, 0x00, 0x00),
-    "temple_black": RGBColor(0x00, 0x00, 0x00),
-    "temple_purple": RGBColor(0x80, 0x00, 0x80),
+    # JDU temple codes (brighter for dark backgrounds)
+    "temple_green": RGBColor(0x55, 0xCC, 0x55),
+    "temple_yellow": RGBColor(0xFF, 0xDD, 0x33),
+    "temple_orange": RGBColor(0xFF, 0xAA, 0x33),
+    "temple_red": RGBColor(0xFF, 0x55, 0x55),
+    "temple_black": RGBColor(0xCC, 0xCC, 0xCC),
+    "temple_purple": RGBColor(0xCC, 0x77, 0xFF),
 }
 
 
@@ -70,34 +75,41 @@ class StyleConfig:
     # Page layout
     page_width: float = 8.5       # inches
     page_height: float = 11.0     # inches
-    margin_top: float = 1.0       # inches
-    margin_bottom: float = 1.0
-    margin_left: float = 1.0
-    margin_right: float = 1.0
+    margin_top: float = 0.8       # inches
+    margin_bottom: float = 0.8
+    margin_left: float = 0.8
+    margin_right: float = 0.8
+
+    # Dark theme
+    dark_mode: bool = True
+    page_background: str = "page_dark"       # page fill color
+    heading_bar_color: str = "heading_bar_gold"  # gold bar behind headings
+    heading_bar_text_color: str = "heading_bar_text"  # text inside bars
 
     # Fonts
     title_font: str = "Arial"
-    title_size: int = 28          # pt
+    title_size: int = 30          # pt
     title_color: str = "327th_gold"
     title_bold: bool = True
 
     subtitle_font: str = "Arial"
     subtitle_size: int = 14
-    subtitle_color: str = "medium_gray"
+    subtitle_color: str = "light_gray"
 
     heading_font: str = "Arial"
-    heading_size: int = 18
-    heading_color: str = "327th_gold"
+    heading_size: int = 16
+    heading_color: str = "heading_bar_text"
     heading_bold: bool = True
 
     subheading_font: str = "Arial"
-    subheading_size: int = 14
-    subheading_color: str = "327th_dark_gold"
+    subheading_size: int = 13
+    subheading_color: str = "327th_gold"
     subheading_bold: bool = True
 
     body_font: str = "Arial"
     body_size: int = 11
-    body_color: str = "dark_gray"
+    body_color: str = "off_white"
+    body_bold: bool = False
 
     # Accent / decorative
     accent_color: str = "327th_gold"
@@ -115,12 +127,9 @@ class StyleConfig:
     header_font_size: int = 8
     footer_font_size: int = 8
 
-    # Background
-    page_background: Optional[str] = None  # hex color or None for white
-
     # Spacing
-    paragraph_spacing_before: int = 0   # pt
-    paragraph_spacing_after: int = 6    # pt
+    paragraph_spacing_before: int = 2   # pt
+    paragraph_spacing_after: int = 4    # pt
     line_spacing: float = 1.15
 
     # Table of contents
@@ -131,6 +140,9 @@ class StyleConfig:
     section_symbol: str = ""          # e.g. "☬" for JDU docs
     use_section_symbols: bool = False
 
+    # Emblem (Republic cog) on title page
+    show_emblem: bool = True
+
     def resolve_color(self, color_key: str) -> RGBColor:
         """Resolve a color key to an RGBColor. Accepts palette names or hex."""
         if color_key in COLORS:
@@ -139,41 +151,39 @@ class StyleConfig:
             return hex_to_rgb(color_key)
         return COLORS.get("black", RGBColor(0, 0, 0))
 
+    def _bg_hex(self) -> str:
+        """Return the page background as a hex string (no #)."""
+        c = self.resolve_color(self.page_background)
+        return f"{c[0]:02X}{c[1]:02X}{c[2]:02X}"
+
+    def _heading_bar_hex(self) -> str:
+        c = self.resolve_color(self.heading_bar_color)
+        return f"{c[0]:02X}{c[1]:02X}{c[2]:02X}"
+
 
 # ---------------------------------------------------------------------------
 # Preset themes
 # ---------------------------------------------------------------------------
 
-THEME_327TH = StyleConfig(
-    title_color="327th_gold",
-    heading_color="327th_gold",
-    subheading_color="327th_dark_gold",
-    accent_color="327th_gold",
-    divider_color="327th_gold",
-)
+THEME_327TH = StyleConfig()
 
 THEME_K_COMPANY = StyleConfig(
     title_color="kc_orange",
-    heading_color="kc_orange",
-    subheading_color="kc_dark_orange",
+    heading_bar_color="kc_dark_orange",
+    subheading_color="kc_orange",
     accent_color="kc_orange",
     divider_color="kc_orange",
     section_symbol="\u2620",  # skull and crossbones
 )
 
 THEME_JDU = StyleConfig(
-    title_color="327th_gold",
-    heading_color="327th_gold",
-    subheading_color="327th_dark_gold",
-    accent_color="327th_gold",
-    divider_color="327th_gold",
     section_symbol="\u262C",  # ☬
     use_section_symbols=True,
 )
 
 THEME_REPUBLIC = StyleConfig(
     title_color="republic_red",
-    heading_color="republic_blue",
+    heading_bar_color="republic_blue",
     subheading_color="republic_red",
     accent_color="republic_red",
     divider_color="republic_blue",
