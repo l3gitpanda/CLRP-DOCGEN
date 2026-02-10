@@ -1,0 +1,337 @@
+# =============================================================================
+# 327th Star Corps Tryout Document
+# Generated with CLRP-DOCGEN
+# =============================================================================
+
+style:
+  theme: "327th"
+  # Override any style property here:
+  # title_font: "Arial"
+  # title_size: 28
+  # title_color: "327th_gold"
+  # body_font: "Arial"
+  # body_size: 11
+
+output:
+  path: "output/327th_Star_Corps_Tryout_Document.docx"
+  format: "docx"  # or "pdf"
+
+content:
+  # ---- Title Page ----
+  - type: title_page
+    title: "327th Star Corps Tryout Document"
+    subtitle: "Clone Wars RP Training Document"
+    author: "327th Leadership"
+    formatted_by: "K Company"
+    version_date: "02/10/2026"
+    extra_lines:
+      - "327th Star Corps"
+      - "Icefuse Clone Wars RP"
+
+  # ---- Table of Contents ----
+  - type: table_of_contents
+    entries:
+      - title: "Introduction"
+      - title: "Preparation"
+      - title: "Teamspeak, Discord, and the 64-bit Client"
+      - title: "Phase One: Introductory Information"
+      - title: "Phase Two: Faces"
+      - title: "Phase Three: Formations"
+      - title: "Phase Four: Trigger Discipline | Brotherhood Code"
+      - title: "Phase Five: Lore Questions"
+      - title: "Phase Six: Rules and Battalion Information"
+      - title: "Conclusion of Tryout"
+
+  # ---- Introduction ----
+  - type: heading
+    text: "Introduction"
+    level: 1
+
+  - type: paragraph
+    text: >
+      This is the 327th Star Corps Tryout Document. When recruiting new clone
+      troopers, this is the document that you are to use to help you. The
+      recruitment process is one that can be long and tedious, however, it is
+      also something that is extremely rewarding. Whenever you conduct a
+      battalion tryout, you are helping the battalion grow, and this document
+      will take you through the entire process step-by-step.
+
+  - type: page_break
+
+  # ---- Preparation ----
+  - type: heading
+    text: "Preparation"
+    level: 1
+
+  - type: paragraph
+    text: >
+      Prior to conducting tryouts, there are matters that must be taken care of.
+      Follow the checklist provided below to adequately set up and prepare to
+      conduct tryouts:
+
+  - type: bullet_list
+    items:
+      - "Find a Clone Trooper (CT) that is willing to join the 327th."
+      - "You can use a tryout advert to bring attention to the 327th via /comms or /advert."
+      - "Once a CT is found, bring them to a SIM room, preferably a Tryout Room, and claim it."
+      - "Send a message in #327th-nco-general saying you have a recruit and @327th Star Corps Officer."
+
+  - type: callout
+    text: "/comms 327th Claims TR(number) | SIM START"
+    callout_style: "info"
+
+  - type: paragraph
+    text: >
+      Once all of this is done, you are then able to go over the rest of the
+      tryout with them and gauge whether or not they are 327th material.
+
+  - type: page_break
+
+  # ---- Teamspeak, Discord ----
+  - type: heading
+    text: "Teamspeak, Discord, and the 64-bit Client"
+    level: 1
+
+  - type: paragraph
+    text: >
+      Let the new recruit know that Discord is only required if they achieve the
+      rank of SGT+ and Teamspeak is required if they achieve the rank of 1SG+.
+      Teamspeak is needed if they want to join a sub-company.
+
+  - type: paragraph
+    text: >
+      Also inform them that if they are having difficulty remaining on the server
+      without crashing, or having performance issues, to switch to the 64-bit
+      version of the game via Steam > Garry's Mod > Properties > Betas >
+      "x86-64 - Chromium + 64-bit binaries".
+
+  - type: heading
+    text: "Once they get Sergeant..."
+    level: 2
+
+  - type: numbered_list
+    items:
+      - "Assist them with getting into the IFN Clone Wars discord server."
+      - "Help them acquire their Clone Trooper reaction role."
+      - "Have them join a Recruitment Room voice channel with you."
+      - "Right click on their name and click Copy ID (enable developer mode in Discord settings > Advanced)."
+
+  - type: page_break
+
+  # ---- Introduction (Read to CT) ----
+  - type: heading
+    text: "Introduction (Read to Recruit)"
+    level: 1
+
+  - type: paragraph
+    text: "From here, the tryout is ready to commence. Read the following to the CT:"
+
+  - type: bullet_list
+    items:
+      - "This tryout does not run on a traditional strike system."
+      - "Instead, I will be showing and explaining to you the basic information on the server."
+      - "If you fail this tryout, there is a 30 minute cooldown in between when you can try again."
+
+  - type: callout
+    text: >
+      It is only necessary to fail a CT if they are excessively mingy and/or
+      clearly not fit to join the battalion. Use your discretion.
+    callout_style: "note"
+
+  - type: page_break
+
+  # ---- Phase 1 ----
+  - type: heading
+    text: "Phase One: Introductory Information"
+    level: 1
+
+  - type: paragraph
+    text: >
+      With the absence of the TR team, CT's are no longer taught all of the
+      basic information when they join the server. That responsibility now falls
+      upon us. Go over the following information with the CT:
+
+  - type: heading
+    text: "Defcons"
+    level: 2
+
+  - type: numbered_list
+    items:
+      - "Defcon 5: Standard Base code — Tryouts/Trainings, weapons holstered or on safety (Shift E+R)."
+      - "Defcon 4: Alert/High Alert — 327th patrols the base with weapons out and ON safety."
+      - "Defcon 3: Battle Stations — 327th at Front Left of HB, weapons out and OFF safety."
+      - "Defcon 2: Essential Areas — 327th protects the Med-Bay, locking it down."
+      - "Defcon 1: Evacuate — Go outside MHB and hop in the closest LAAT."
+
+  - type: heading
+    text: "PTL / PTE / Brotherhood Code / PTS"
+    level: 2
+
+  - type: bullet_list
+    items:
+      - "Permission to Leave (PTL): Must ask permission to leave the base. Requires SGT+."
+      - "Permission to Enter (PTE): Must ask permission to enter restricted areas (other battalion bunks, etc.)."
+      - "Brotherhood Code: No trooper shall bring harm to another brother unless in a SIM started room."
+      - "Permission to Speak (PTS): Must ask to speak during PTS-active times. Always active during debriefs."
+
+  - type: page_break
+
+  # ---- Phase 2: Faces ----
+  - type: heading
+    text: "Phase Two: Faces"
+    level: 1
+
+  - type: paragraph
+    text: "Faces are used server-wide as directional orders. There are four commands:"
+
+  - type: bullet_list
+    items:
+      - "Left Face: A 90 degree turn to the left."
+      - "Right Face: A 90 degree turn to the right."
+      - "About Face: A 180 degree turn over your right shoulder."
+      - "Front Face: A turn over your right shoulder to face your commanding officer."
+
+  - type: paragraph
+    text: "Test sequences (choose 2 of 6):"
+    bold: true
+
+  - type: numbered_list
+    items:
+      - "L L R L A L R A F R A F [Facing you]"
+      - "L L L R R R A F [Facing you]"
+      - "A R L A R R L A [Facing to your right]"
+      - "F A L A R A L R [Facing the wall]"
+      - "J E D I  A A Y L A S E C U R A [Facing you]"
+      - "C O M M A N D E R B L Y [Facing the wall]"
+
+  - type: page_break
+
+  # ---- Phase 3: Formations ----
+  - type: heading
+    text: "Phase Three: Formations"
+    level: 1
+
+  - type: paragraph
+    text: >
+      Formations are used server-wide for squads in both combat and non-combat
+      scenarios. All incoming troopers must know these:
+
+  - type: numbered_list
+    items:
+      - "Single Column: Single file line behind the commanding officer. Used for marching."
+      - "Double Column: Two lines behind CO with room to walk between them."
+      - "Tight Wedge: V-shape, close together. Used for patrols or CQC."
+      - "Loose Wedge: V-shape, spread apart. Used for open field patrols/battles."
+      - "Left/Right Echelon: Half a V. Used with friendly forces or in aerial combat."
+      - "Firing Line: Shoulder-to-shoulder, weapons out and off safety. Defensive positions."
+      - "Advance Firing Line: Two firing lines — front crouched, back standing."
+      - "VIP Diamond: Four troopers surrounding a VIP on all four sides, 360 coverage."
+      - "Prisoner Diamond: Four troopers surrounding a prisoner, weapons/comms stripped and bound."
+
+  - type: callout
+    text: "Test the recruit with 3 formations to ensure understanding."
+    callout_style: "note"
+
+  - type: page_break
+
+  # ---- Phase 4: Trigger Discipline ----
+  - type: heading
+    text: "Phase Four: Trigger Discipline | Brotherhood Code"
+    level: 1
+
+  - type: paragraph
+    text: "Trigger discipline tests a trooper's ability to hold fire when friendlies cross their crosshair."
+
+  - type: numbered_list
+    items:
+      - "SIM Start the simulation room (unless in a Tryout Room)."
+      - "Have the recruit stand a third of the room away from a side wall."
+      - "They must aim crosshair at chest level, emptying their magazine without hitting you."
+      - "Restart this phase every time you get hit by the CT."
+      - "SIM Stop and test them on the Brotherhood Code."
+
+  - type: callout
+    text: >
+      After Trigger Discipline, call SIM Stop and tell them to kill you.
+      Whether they pass or fail, explain why.
+    callout_style: "warning"
+
+  - type: page_break
+
+  # ---- Phase 5: Lore ----
+  - type: heading
+    text: "Phase Five: Lore Questions"
+    level: 1
+
+  - type: paragraph
+    text: >
+      Inform the recruit this is an open-book examination. They may use Google,
+      Wookieepedia, or the F4 menu.
+
+  - type: qa_block
+    question: "Who is the Clone Commander of the 327th Star Corps?"
+    answer: "CC-5052 \"Commander Bly\""
+
+  - type: qa_block
+    question: "Who is the Jedi General that commands the 327th Star Corps?"
+    answer: "Jedi General Aayla Secura"
+
+  - type: qa_block
+    question: "Name two battles that the 327th Star Corps served in."
+    answer: "Battle of Felucia, Battle of Geonosis, Battle of Maridun, Battle of Quell, Battle of Escander, or Battle of Christophsis."
+
+  - type: qa_block
+    question: "Name two units that also fall under the 327th Star Corps."
+    answer: "K Company, Bacta Company, Talon Squad, Hawkbat Battalion, 2nd Platoon, 7th Legion, or the 101st Regiment."
+
+  - type: page_break
+
+  # ---- Phase 6: Rules ----
+  - type: heading
+    text: "Phase Six: Rules and Battalion Information"
+    level: 1
+
+  - type: paragraph
+    text: >
+      This phase ensures the recruit understands server rules, battalion rules,
+      and handbook information. Hand out these links with brief explanations:
+
+  - type: numbered_list
+    items:
+      - "327th Enlisted Handbook (Subdivisions, SubCompanies, COC)"
+      - "327th Body Groupers (Explain how to change body groupers — rank and subdivision)"
+      - "327th Handbook (Battalion rules, Subcompany rules, Lore, Rank system, Battlestations, Quotas, Commands, COC)"
+      - "Clone Wars RP Rules (Server rules and important information)"
+      - "New Player Guide (Important information for new players)"
+      - "Discord & Teamspeak Setup (How to get Discord and Teamspeak setup)"
+
+  - type: page_break
+
+  # ---- Conclusion ----
+  - type: heading
+    text: "Conclusion of Tryout"
+    level: 1
+
+  - type: paragraph
+    text: >
+      If the CT makes it to the end, they have passed. Congratulate them and go
+      over the following:
+
+  - type: numbered_list
+    items:
+      - "Have them change their name to: 327th SC PVT [Name]"
+      - "Have them make a role request in #role-request-channel in Discord."
+      - "Fill out the All-in-One Form so they are added to the roster."
+      - "Make a ticket for the recruit's whitelist: @ Need 327th Trooper & Heavy whitelist for [name]."
+
+  - type: heading
+    text: "Role Request Format"
+    level: 2
+
+  - type: bullet_list
+    items:
+      - "Name: (Ensure nickname matches in-game name)"
+      - "SteamID64: (Accessible via TAB menu in-game)"
+      - "Battalion: 327th Star Corps"
+      - "Roles Needed: 327th Star Corps"
+      - "@327th Star Corps XO"
